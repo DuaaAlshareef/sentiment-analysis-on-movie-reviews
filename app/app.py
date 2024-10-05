@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from model.model import load_model, predict_sentiment
-from .preprocessing import preprocess_text
+from data.preprocessing import preprocess_text
 
 # Initialize FastAPI
 app = FastAPI()
@@ -12,6 +12,11 @@ model, device = load_model()
 # Define the input data structure using Pydantic
 class ReviewInput(BaseModel):
     review: str
+
+input_tensor = preprocess_text("bAD MOVIE NO LIKE")
+        
+# Make the prediction
+sentiment_label, probability = predict_sentiment(model, device, input_tensor)
 
 # Define the prediction endpoint
 @app.post("/predict")
